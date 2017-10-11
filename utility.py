@@ -1,6 +1,7 @@
 import numpy as np
 import scipy as sp
 import pandas as pd
+import sklearn.preprocessing as pp
 
 def count_feature(X, tbl_lst = None, min_cnt = 1):
     X_lst = [pd.Series(X[:, i]) for i in range(X.shape[1])]
@@ -44,13 +45,12 @@ def RImatrix(p, m, k, rm_dup_cols = False, seed = None):
     if rm_dup_cols:
         mat = remove_duplicate_cols(mat)
     return mat
-
 # Random Indexing
 def RI(X, m, k = 1, normalize = True, seed = None, returnR = False):
     R = RImatrix(X.shape[1], m, k, rm_dup_cols = True, seed = seed)
     Mat = X * R
     if normalize:
-        Mat = pp.normalize(Mat, norm = 'l2')
+        Mat = pp.normalize(Mat, norm = 'l2')  # 没有导包
     if returnR:
         return Mat, R
     else:
@@ -65,7 +65,7 @@ def col_k_ones_matrix(p, m, k = None, k_min = 1, k_max = 1, seed = None, rm_dup_
     col = np.repeat(range(m), k_col)
     popu = np.arange(p)
     l = [np.random.choice(popu, k_col[i], replace = False).tolist() for i in range(m)]
-    row = sum(l, [])
+    row = sum(l, [])  # 转换一下
     data = np.ones(k_col.sum())
     mat = sp.sparse.coo_matrix((data, (row, col)), shape = (p, m), dtype = np.float32)
     if rm_dup_cols:
