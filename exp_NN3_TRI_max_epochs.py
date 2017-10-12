@@ -92,9 +92,9 @@ for params in ParameterGrid(param_grid):
         seed = i + 9198
         R = col_k_ones_matrix(X.shape[1], m, k_min = k_min, k_max = k_max, seed = seed)
         np.random.seed(seed + 33)
-        R.data = np.random.choice([1, -1], R.data.size)
+        R.data = np.random.choice([1, -1], R.data.size)  #更改data从1为-1，1
         X3 = X * R
-        X1 = np.sign(X3) * np.abs(X3) ** po
+        X1 = np.sign(X3) * np.abs(X3) ** po  # 不是很理解这句话前半段的意义
         X2 = scaler.fit_transform(X1)
         training = DenseDesignMatrix(X = X2[train_idx], y = yMat[train_idx])
         l1 = RectifiedLinear(layer_name='l1', irange = ir, dim = dim, max_col_norm = 1.)
